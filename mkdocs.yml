@@ -1,7 +1,7 @@
 site_name: Jarvus Labs Library
 repo_url: https://github.com/JarvusLabs/library
 site_url: http://jarvuslabs.github.io/library/
-edit_uri: edit/develop/docs
+edit_uri: edit/master/docs
 
 theme:
   name: material
