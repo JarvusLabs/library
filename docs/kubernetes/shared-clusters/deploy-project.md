@@ -42,7 +42,7 @@ Still within the shared cluster's GitHub repository, define a holosource and hol
 
     ```toml
     [holosource]
-    url = "git@github.com:JarvusInnovations/client-project.git"
+    url = "https://github.com/JarvusInnovations/client-project.git"
     ref = "refs/heads/deploy"
     ```
 
@@ -125,3 +125,30 @@ Then commit the projected `k8s-manifests` holobranch **with** lensing on top to 
 ```bash
 git holo project k8s-manifests-github --working --commit-to=k8s/deploy
 ```
+
+### Add GitHub credentials to new namespace
+
+Authentication is always required to pull Docker images from GitHub Packages, even when the project repository is public. Wherever the project's Helm chart templates reference the project's Docker container image published on GitHub, `imagePullSecrets` should be configured to use a secret named `regcred`.
+
+The shared cluster's `.github/workflows/deploy-manifests.yml` workflow must then be edited to add a line with the new project namespace to the `REGCRED_NAMESPACES` env value. With that, the workflow will handle generating a `regcred` secret with access to GitHub in each namespace to include in every deployment.
+
+### Authenticate access to private project sources
+
+If the project's repository is private, an additional step must be taken to grant fetch access to the GitHub Actions workflow running under the shared cluster's repository.
+
+Edit the shared cluster's `.github/workflows/build-manifests.yml` workflow and add an environment variable to the manifests projection step overriding the named source with an authenticated Git remote URL:
+
+```yaml
+# ...
+jobs:
+  build-manifests:
+    # ...
+    steps:
+    - name: 'Update holobranch: k8s/manifests'
+      uses: JarvusInnovations/hologit@actions/projector/v1
+      env:
+        # ...
+        HOLO_SOURCE_CLIENT_PROJECT: https://jarvus-bot:${{ secrets.BOT_GITHUB_TOKEN }}@github.com/JarvusInnovations/client-project.git
+```
+
+The bot user must be granted read access to the repository.
