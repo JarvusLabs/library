@@ -410,6 +410,20 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#add-github-credentials-to-new-namespace" class="md-nav__link">
+    Add GitHub credentials to new namespace
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#authenticate-access-to-private-project-sources" class="md-nav__link">
+    Authenticate access to private project sources
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -520,6 +534,20 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#add-github-credentials-to-new-namespace" class="md-nav__link">
+    Add GitHub credentials to new namespace
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#authenticate-access-to-private-project-sources" class="md-nav__link">
+    Authenticate access to private project sources
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -571,7 +599,7 @@
 <p>Still within the shared cluster&rsquo;s GitHub repository, define a holosource and holomapping to populate the project&rsquo;s directory created above with content from the project&rsquo;s <code>helm-chart</code> projection:</p>
 <div class="tabbed-set" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><label for="__tabbed_2_1">.holo/sources/client-project.toml</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="k">[holosource]</span>
-<span class="n">url</span> <span class="o">=</span> <span class="s">&quot;git@github.com:JarvusInnovations/client-project.git&quot;</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s">&quot;https://github.com/JarvusInnovations/client-project.git&quot;</span>
 <span class="n">ref</span> <span class="o">=</span> <span class="s">&quot;refs/heads/deploy&quot;</span>
 </code></pre></div>
 </div>
@@ -636,6 +664,24 @@
 <p>Then commit the projected <code>k8s-manifests</code> holobranch <strong>with</strong> lensing on top to preview how it will be extended:</p>
 <div class="highlight"><pre><span></span><code>git holo project k8s-manifests-github --working --commit-to<span class="o">=</span>k8s/deploy
 </code></pre></div>
+<h3 id="add-github-credentials-to-new-namespace">Add GitHub credentials to new namespace<a class="headerlink" href="#add-github-credentials-to-new-namespace" title="Permanent link"> ¶</a></h3>
+<p>Authentication is always required to pull Docker images from GitHub Packages, even when the project repository is public. Wherever the project&rsquo;s Helm chart templates reference the project&rsquo;s Docker container image published on GitHub, <code>imagePullSecrets</code> should be configured to use a secret named <code>regcred</code>.</p>
+<p>The shared cluster&rsquo;s <code>.github/workflows/deploy-manifests.yml</code> workflow must then be edited to add a line with the new project namespace to the <code>REGCRED_NAMESPACES</code> env value. With that, the workflow will handle generating a <code>regcred</code> secret with access to GitHub in each namespace to include in every deployment.</p>
+<h3 id="authenticate-access-to-private-project-sources">Authenticate access to private project sources<a class="headerlink" href="#authenticate-access-to-private-project-sources" title="Permanent link"> ¶</a></h3>
+<p>If the project&rsquo;s repository is private, an additional step must be taken to grant fetch access to the GitHub Actions workflow running under the shared cluster&rsquo;s repository.</p>
+<p>Edit the shared cluster&rsquo;s <code>.github/workflows/build-manifests.yml</code> workflow and add an environment variable to the manifests projection step overriding the named source with an authenticated Git remote URL:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># ...</span>
+<span class="nt">jobs</span><span class="p">:</span>
+  <span class="nt">build-manifests</span><span class="p">:</span>
+    <span class="c1"># ...</span>
+    <span class="nt">steps</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&#39;Update</span><span class="nv"> </span><span class="s">holobranch:</span><span class="nv"> </span><span class="s">k8s/manifests&#39;</span>
+      <span class="nt">uses</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">JarvusInnovations/hologit@actions/projector/v1</span>
+      <span class="nt">env</span><span class="p">:</span>
+        <span class="c1"># ...</span>
+        <span class="nt">HOLO_SOURCE_CLIENT_PROJECT</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://jarvus-bot:${{ secrets.BOT_GITHUB_TOKEN }}@github.com/JarvusInnovations/client-project.git</span>
+</code></pre></div>
+<p>The bot user must be granted read access to the repository.</p>
                 
               
               
