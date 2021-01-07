@@ -2,6 +2,7 @@
 
 ## Prerequisites
 
+- An operational [shared cluster](./create-cluster.md)
 - A working `Dockerfile` at the root of the project repository
 
 ## Setup
