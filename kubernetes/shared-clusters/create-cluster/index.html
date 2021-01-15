@@ -12,7 +12,7 @@
         <link rel="canonical" href="http://jarvuslabs.github.io/library/kubernetes/shared-clusters/create-cluster/">
       
       <link rel="shortcut icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.2.3">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.2.4">
     
     
       
@@ -20,10 +20,10 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.3b61ea93.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.15aa0b43.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.39b8e14a.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.75751829.min.css">
         
           
           
@@ -324,9 +324,52 @@
       
     
     
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Create a cluster
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+    
     <a href="./" class="md-nav__link md-nav__link--active">
       Create a cluster
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#create-github-token-for-deploy-workflows" class="md-nav__link">
+    Create GitHub token for deploy workflows
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-service-account" class="md-nav__link">
+    Create service account
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-github-token-for-cluster-image-pulls" class="md-nav__link">
+    Create GitHub token for cluster image pulls
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
     
   </li>
 
@@ -372,6 +415,35 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#create-github-token-for-deploy-workflows" class="md-nav__link">
+    Create GitHub token for deploy workflows
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-service-account" class="md-nav__link">
+    Create service account
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-github-token-for-cluster-image-pulls" class="md-nav__link">
+    Create GitHub token for cluster image pulls
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -394,6 +466,123 @@
 <li><a href="https://github.com/JarvusInnovations/cluster-template">cluster-template</a>: Jarvus&rsquo; public template for lightweight, self-sufficient, multi-project Kubernetes clusters.</li>
 <li><a href="https://github.com/JarvusInnovations/jarvus-sandbox-cluster">jarvus-sandbox-cluster</a>: If you have access, this repository demonstrates the setup documented in this section.</li>
 </ul>
+<h2 id="create-github-token-for-deploy-workflows">Create GitHub token for deploy workflows<a class="headerlink" href="#create-github-token-for-deploy-workflows" title="Permanent link"> ¶</a></h2>
+<p>The GitHub Actions deployment workflow requires a GitHub bot user to write to the cluster repository with. This is necessary so that a branch pushed by the GitHub Actions workflow can trigger subsequent workflows. The authentication tokens that are automatically provided to all GitHub Actions workflow runs are able to push to the host repository, but their pushes are prevented from triggering any workflows.</p>
+<ol>
+<li>Create or reuse GitHub bot user with write access to the cluster repository</li>
+<li>Grant the GitHub bot user the write access to the cluster repository, and ensure that its invitation is accepted</li>
+<li><a href="https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token">Create a Personal Access Token</a> under the GitHub bot user with <code>repo</code> scope</li>
+<li>Save the generated Personal Access Token to a secret called <code>BOT_GITHUB_TOKEN</code> under the cluster repository</li>
+</ol>
+<h2 id="create-service-account">Create service account<a class="headerlink" href="#create-service-account" title="Permanent link"> ¶</a></h2>
+<p>The GitHub Actions Workflows driving deployments will need a service account with read/write access to all namespaces. Add this manifest to the cluster&rsquo;s GitHub repository under e.g. <code>deployers/cluster.yaml</code> where it will become part of the automated deployment, but you will need to apply it to the cluster manually ahead of the first automated deployment:</p>
+<div class="tabbed-set" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><label for="__tabbed_1_1">deployers/cluster.yaml</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">v1</span>
+<span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ServiceAccount</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">cluster-deployer</span>
+<span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">kube-system</span>
+
+<span class="nn">---</span>
+
+<span class="nt">apiVersion</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">rbac.authorization.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ClusterRole</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">cluster-deployer</span>
+<span class="nt">rules</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">apiGroups</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="s">&quot;*&quot;</span><span class="p p-Indicator">]</span>
+<span class="nt">resources</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="s">&quot;*&quot;</span><span class="p p-Indicator">]</span>
+<span class="nt">verbs</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="s">&quot;*&quot;</span><span class="p p-Indicator">]</span>
+
+<span class="nn">---</span>
+
+<span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">RoleBinding</span>
+<span class="nt">apiVersion</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">rbac.authorization.k8s.io/v1beta1</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">cluster-deployer</span>
+<span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">kube-system</span>
+<span class="nt">roleRef</span><span class="p">:</span>
+<span class="nt">apiGroup</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">rbac.authorization.k8s.io</span>
+<span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ClusterRole</span>
+<span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">cluster-deployer</span>
+<span class="nt">subjects</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ServiceAccount</span>
+<span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">cluster-deployer</span>
+<span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">kube-system</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><label for="__tabbed_1_2">mkkubeconfig</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
+<span class="c1"># adapted from: https://gist.github.com/ericchiang/d2a838ddad3f44436ae001a342e1001e</span>
+
+<span class="nv">TEMPDIR</span><span class="o">=</span><span class="k">$(</span> mktemp -d <span class="k">)</span>
+
+<span class="nb">trap</span> <span class="s2">&quot;{ rm -rf </span><span class="nv">$TEMPDIR</span><span class="s2"> ; exit 255; }&quot;</span> EXIT
+
+<span class="nv">SA_SECRET</span><span class="o">=</span><span class="k">$(</span> kubectl get sa -n <span class="nv">$1</span> <span class="nv">$2</span> -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.secrets[0].name}&#39;</span> <span class="k">)</span>
+
+<span class="c1"># Pull the bearer token and cluster CA from the service account secret.</span>
+<span class="nv">BEARER_TOKEN</span><span class="o">=</span><span class="k">$(</span> kubectl get secrets -n <span class="nv">$1</span> <span class="nv">$SA_SECRET</span> -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.token}&#39;</span> <span class="p">|</span> base64 -d <span class="k">)</span>
+kubectl get secrets -n <span class="nv">$1</span> <span class="nv">$SA_SECRET</span> -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.ca\.crt}&#39;</span> <span class="p">|</span> base64 -d &gt; <span class="nv">$TEMPDIR</span>/ca.crt
+
+<span class="nv">CLUSTER_URL</span><span class="o">=</span><span class="k">$(</span> kubectl config view -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.clusters[0].cluster.server}&#39;</span> <span class="k">)</span>
+
+<span class="nv">KUBECONFIG</span><span class="o">=</span><span class="nv">$TEMPDIR</span>/kubeconfig.yaml
+
+<span class="m">1</span>&gt;<span class="p">&amp;</span><span class="m">2</span> kubectl config --kubeconfig<span class="o">=</span><span class="nv">$KUBECONFIG</span> <span class="se">\</span>
+    set-cluster <span class="se">\</span>
+    <span class="nv">$CLUSTER_URL</span> <span class="se">\</span>
+    --server<span class="o">=</span><span class="nv">$CLUSTER_URL</span> <span class="se">\</span>
+    --certificate-authority<span class="o">=</span><span class="nv">$TEMPDIR</span>/ca.crt <span class="se">\</span>
+    --embed-certs<span class="o">=</span><span class="nb">true</span>
+
+<span class="m">1</span>&gt;<span class="p">&amp;</span><span class="m">2</span> kubectl config --kubeconfig<span class="o">=</span><span class="nv">$KUBECONFIG</span> <span class="se">\</span>
+    set-credentials <span class="nv">$2</span> --token<span class="o">=</span><span class="nv">$BEARER_TOKEN</span>
+
+<span class="m">1</span>&gt;<span class="p">&amp;</span><span class="m">2</span> kubectl config --kubeconfig<span class="o">=</span><span class="nv">$KUBECONFIG</span> <span class="se">\</span>
+    set-context registry <span class="se">\</span>
+    --cluster<span class="o">=</span><span class="nv">$CLUSTER_URL</span> <span class="se">\</span>
+    --user<span class="o">=</span><span class="nv">$2</span>
+
+<span class="m">1</span>&gt;<span class="p">&amp;</span><span class="m">2</span> kubectl config --kubeconfig<span class="o">=</span><span class="nv">$KUBECONFIG</span> <span class="se">\</span>
+    use-context registry
+
+cat <span class="nv">$KUBECONFIG</span>
+</code></pre></div>
+</div>
+</div>
+<ol>
+<li>
+<p>Apply manifests to create service account:</p>
+<div class="highlight"><pre><span></span><code>kubectl apply -f deployers/cluster.yaml
+</code></pre></div>
+</li>
+<li>
+<p>Use provided script to generate a base64-encoded KUBECONFIG for GitHub:</p>
+<div class="highlight"><pre><span></span><code>./mkkubeconfig kube-system cluster-deployer <span class="p">|</span> base64
+</code></pre></div>
+</li>
+<li>
+<p>Save the base64 blob output above to a secret called <code>KUBECONFIG_BASE64</code> under the cluster repository</p>
+</li>
+</ol>
+<h2 id="create-github-token-for-cluster-image-pulls">Create GitHub token for cluster image pulls<a class="headerlink" href="#create-github-token-for-cluster-image-pulls" title="Permanent link"> ¶</a></h2>
+<p>If deployments will utilize Docker container images uploaded to GitHub&rsquo;s Packages registry, the deployment workflow can handle injecting these into any desired namespace.</p>
+<ol>
+<li>Create or reuse GitHub bot user with write access to the cluster repository</li>
+<li>Grant the GitHub bot user write access to the cluster repository, and ensure that its invitation is accepted</li>
+<li><a href="https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token">Create a Personal Access Token</a> under the GitHub bot user with the <code>read:packages</code> scope</li>
+<li>
+<p>Generate a base64-encoded <code>.docker/config.json</code> file:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">echo</span> -n <span class="s1">&#39;Username: &#39;</span> <span class="o">&amp;&amp;</span> <span class="nb">read</span> github_username
+<span class="nb">echo</span> -n <span class="s1">&#39;Password: &#39;</span> <span class="o">&amp;&amp;</span> <span class="nb">read</span> -s github_token
+<span class="nb">echo</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&quot;{ \&quot;auths\&quot;: { \&quot;docker.pkg.github.com\&quot;: { \&quot;auth\&quot;: \&quot;</span><span class="k">$(</span><span class="nb">echo</span> -n <span class="s2">&quot;</span><span class="si">${</span><span class="nv">github_username</span><span class="si">}</span><span class="s2">:</span><span class="si">${</span><span class="nv">github_token</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">|</span> base64<span class="k">)</span><span class="s2">\&quot; } } }&quot;</span> <span class="p">|</span> base64
+</code></pre></div>
+</li>
+<li>
+<p>Save the generated base64 blob to a secret called <code>DOCKER_CONFIG_BASE64</code> under the cluster repository</p>
+</li>
+</ol>
                 
               
               
@@ -460,8 +649,8 @@
       
     </div>
     
-      <script src="../../../assets/javascripts/vendor.08c56446.min.js"></script>
-      <script src="../../../assets/javascripts/bundle.6ced434e.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+      <script src="../../../assets/javascripts/vendor.93c04032.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.83e5331e.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
       
       <script>
         app = initialize({
