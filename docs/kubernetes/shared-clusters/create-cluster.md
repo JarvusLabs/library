@@ -11,9 +11,9 @@ For now, see:
 
 1. Create a new repo (e.g. `cluster-live`) and configure it with hologit, for example:
 ```
-mkdir -p cluster-live/.holo && cd cluster-live && git init
+git init cluster-live && cd cluster-live
 touch README.md && git add . && git commit -m "wip: initial commit"
-git holo init && git add . && git commit -m "feat: add .holo cfg"
+git holo init && git commit -m "feat: configure holo workspace"
 ```
 
 2. Add `cluster-template` as holosource in `.holo/sources`
