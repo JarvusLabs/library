@@ -388,6 +388,13 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#set-up-cluster-repository" class="md-nav__link">
+    Set up cluster repository
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#create-github-token-for-deploy-workflows" class="md-nav__link">
     Create GitHub token for deploy workflows
   </a>
@@ -465,6 +472,13 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#set-up-cluster-repository" class="md-nav__link">
+    Set up cluster repository
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#create-github-token-for-deploy-workflows" class="md-nav__link">
     Create GitHub token for deploy workflows
   </a>
@@ -509,6 +523,82 @@
 <li><a href="https://github.com/JarvusInnovations/cluster-template">cluster-template</a>: Jarvus&rsquo; public template for lightweight, self-sufficient, multi-project Kubernetes clusters.</li>
 <li><a href="https://github.com/JarvusInnovations/jarvus-sandbox-cluster">jarvus-sandbox-cluster</a>: If you have access, this repository demonstrates the setup documented in this section.</li>
 </ul>
+<h2 id="set-up-cluster-repository">Set up cluster repository<a class="headerlink" href="#set-up-cluster-repository" title="Permanent link"> ¶</a></h2>
+<ol>
+<li>
+<p>Create a new repo (e.g. <code>cluster-live</code>) and configure it with hologit, for example:
+<div class="highlight"><pre><span></span><code>git init cluster-live &amp;&amp; cd cluster-live
+touch README.md &amp;&amp; git add . &amp;&amp; git commit -m &quot;wip: initial commit&quot;
+git holo init &amp;&amp; git commit -m &quot;feat: configure holo workspace&quot;
+</code></pre></div></p>
+</li>
+<li>
+<p>Add <code>cluster-template</code> as holosource in <code>.holo/sources</code></p>
+</li>
+</ol>
+<p><code>.holo/sources/cluster-template.toml</code>
+<div class="highlight"><pre><span></span><code>[holosource]
+url = &quot;https://github.com/JarvusInnovations/cluster-template&quot;
+ref = &quot;refs/tags/v0.4.0&quot;
+</code></pre></div>
+3. Add holobranch for <code>cluster-template</code> using the <code>k8s-blueprint</code> holomapping in <code>.holo/branches</code></p>
+<p><code>.holo/branches/k8s-manifests/_cluster-template.toml</code>
+<div class="highlight"><pre><span></span><code>[holomapping]
+holosource = &quot;=&gt;k8s-blueprint&quot;
+files = &quot;**&quot;
+before = &quot;*&quot;
+</code></pre></div></p>
+<ol>
+<li>Add your own k8s manifests/settings to the repo e.g. Cluster Issuers for <strong>cert-manager</strong> certificates</li>
+</ol>
+<p><code>cert-manager/cert-manager.issuers.yaml</code></p>
+<div class="highlight"><pre><span></span><code>apiVersion: cert-manager.io/v1alpha2
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-staging
+spec:
+  acme:
+    email: email@example.com
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-staging
+    solvers:
+    - http01:
+        ingress:
+          class: nginx
+---
+
+apiVersion: cert-manager.io/v1alpha2
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+spec:
+  acme:
+    email: email@example.com
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-prod
+    solvers:
+    - http01:
+        ingress:
+          class: nginx
+</code></pre></div>
+<ol>
+<li>
+<p>Project manifests into <code>k8s/manifests</code> branch
+<div class="highlight"><pre><span></span><code>git holo project --working k8s-manifests --commit-to=k8s/manifests
+</code></pre></div></p>
+</li>
+<li>
+<p>Checkout the branch, and diff/apply the changes in the repo to the cluster.
+<div class="highlight"><pre><span></span><code>git checkout k8s/manifests
+
+kubectl diff -Rf ./
+
+kubectl apply -Rf ./
+</code></pre></div></p>
+</li>
+</ol>
 <h2 id="create-github-token-for-deploy-workflows">Create GitHub token for deploy workflows<a class="headerlink" href="#create-github-token-for-deploy-workflows" title="Permanent link"> ¶</a></h2>
 <p>The GitHub Actions deployment workflow requires a GitHub bot user to write to the cluster repository with. This is necessary so that a branch pushed by the GitHub Actions workflow can trigger subsequent workflows. The authentication tokens that are automatically provided to all GitHub Actions workflow runs are able to push to the host repository, but their pushes are prevented from triggering any workflows.</p>
 <ol>
