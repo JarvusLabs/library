@@ -37,7 +37,7 @@ before = "*"
 
 4. Add your own k8s manifests/settings to the repo e.g. Cluster Issuers for **cert-manager** certificates
 
-`cert-manager/cert-manager.issuers.yaml`
+`cert-manager.issuers.yaml`
 
 ```
 apiVersion: cert-manager.io/v1alpha2
