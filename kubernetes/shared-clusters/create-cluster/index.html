@@ -551,7 +551,7 @@ before = &quot;*&quot;
 <ol>
 <li>Add your own k8s manifests/settings to the repo e.g. Cluster Issuers for <strong>cert-manager</strong> certificates</li>
 </ol>
-<p><code>cert-manager/cert-manager.issuers.yaml</code></p>
+<p><code>cert-manager.issuers.yaml</code></p>
 <div class="highlight"><pre><span></span><code>apiVersion: cert-manager.io/v1alpha2
 kind: ClusterIssuer
 metadata:
@@ -602,9 +602,9 @@ kubectl apply -Rf ./
 <h2 id="create-github-token-for-deploy-workflows">Create GitHub token for deploy workflows<a class="headerlink" href="#create-github-token-for-deploy-workflows" title="Permanent link"> ¶</a></h2>
 <p>The GitHub Actions deployment workflow requires a GitHub bot user to write to the cluster repository with. This is necessary so that a branch pushed by the GitHub Actions workflow can trigger subsequent workflows. The authentication tokens that are automatically provided to all GitHub Actions workflow runs are able to push to the host repository, but their pushes are prevented from triggering any workflows.</p>
 <ol>
-<li>Create or reuse GitHub bot user with write access to the cluster repository</li>
+<li>Create or reuse GitHub bot user with write access to the cluster repository </li>
 <li>Grant the GitHub bot user the write access to the cluster repository, and ensure that its invitation is accepted</li>
-<li><a href="https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token">Create a Personal Access Token</a> under the GitHub bot user with <code>repo</code> scope</li>
+<li><a href="https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token">Create a Personal Access Token</a> under the GitHub bot user with <code>workflow</code> scope</li>
 <li>Save the generated Personal Access Token to a secret called <code>BOT_GITHUB_TOKEN</code> under the cluster repository</li>
 </ol>
 <h2 id="create-service-account">Create service account<a class="headerlink" href="#create-service-account" title="Permanent link"> ¶</a></h2>
