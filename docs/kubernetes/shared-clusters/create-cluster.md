@@ -94,7 +94,7 @@ The GitHub Actions deployment workflow requires a GitHub bot user to write to th
 
 1. Create or reuse GitHub bot user with write access to the cluster repository 
 2. Grant the GitHub bot user the write access to the cluster repository, and ensure that its invitation is accepted
-3. [Create a Personal Access Token](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token) under the GitHub bot user with `workflow` scope
+3. [Create a Personal Access Token](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token) under the GitHub bot user with the `repo` and `workflow` scopes
 4. Save the generated Personal Access Token to a secret called `BOT_GITHUB_TOKEN` under the cluster repository
 
 ## Create service account
