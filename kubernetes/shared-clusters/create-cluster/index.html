@@ -604,7 +604,7 @@ kubectl apply -Rf ./
 <ol>
 <li>Create or reuse GitHub bot user with write access to the cluster repository </li>
 <li>Grant the GitHub bot user the write access to the cluster repository, and ensure that its invitation is accepted</li>
-<li><a href="https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token">Create a Personal Access Token</a> under the GitHub bot user with <code>workflow</code> scope</li>
+<li><a href="https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token">Create a Personal Access Token</a> under the GitHub bot user with the <code>repo</code> and <code>workflow</code> scopes</li>
 <li>Save the generated Personal Access Token to a secret called <code>BOT_GITHUB_TOKEN</code> under the cluster repository</li>
 </ol>
 <h2 id="create-service-account">Create service account<a class="headerlink" href="#create-service-account" title="Permanent link"> ¶</a></h2>
