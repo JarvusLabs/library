@@ -151,7 +151,8 @@ spec:
           restartPolicy: Never
           containers:
             - name: kubectl
-              image: lachlanevenson/k8s-kubectl
+            image: lachlanevenson/k8s-kubectl:v1.18.16
+            imagePullPolicy: IfNotPresent
               envFrom:
                 - secretRef:
                     name: restic
