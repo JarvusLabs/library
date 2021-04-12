@@ -1,4 +1,4 @@
-# Deploying a project
+# Deploy a project
 
 ## Prerequisites
 
