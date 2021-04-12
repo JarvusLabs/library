@@ -138,61 +138,25 @@ The GitHub Actions Workflows driving deployments will need a service account wit
     namespace: kube-system
     ```
 
-=== "mkkubeconfig"
+1. Install [`mkkubeconfig`](https://github.com/JarvusInnovations/mkkubeconfig) command (if needed):
 
     ```bash
-    #!/bin/bash
-    # adapted from: https://gist.github.com/ericchiang/d2a838ddad3f44436ae001a342e1001e
-
-    TEMPDIR=$( mktemp -d )
-
-    trap "{ rm -rf $TEMPDIR ; exit 255; }" EXIT
-
-    SA_SECRET=$( kubectl get sa -n $1 $2 -o jsonpath='{.secrets[0].name}' )
-
-    # Pull the bearer token and cluster CA from the service account secret.
-    BEARER_TOKEN=$( kubectl get secrets -n $1 $SA_SECRET -o jsonpath='{.data.token}' | base64 -d )
-    kubectl get secrets -n $1 $SA_SECRET -o jsonpath='{.data.ca\.crt}' | base64 -d > $TEMPDIR/ca.crt
-
-    CLUSTER_URL=$( kubectl config view -o jsonpath='{.clusters[0].cluster.server}' )
-
-    KUBECONFIG=$TEMPDIR/kubeconfig.yaml
-
-    1>&2 kubectl config --kubeconfig=$KUBECONFIG \
-        set-cluster \
-        $CLUSTER_URL \
-        --server=$CLUSTER_URL \
-        --certificate-authority=$TEMPDIR/ca.crt \
-        --embed-certs=true
-
-    1>&2 kubectl config --kubeconfig=$KUBECONFIG \
-        set-credentials $2 --token=$BEARER_TOKEN
-
-    1>&2 kubectl config --kubeconfig=$KUBECONFIG \
-        set-context $2 \
-        --cluster=$CLUSTER_URL \
-        --namespace=$1 \
-        --user=$2
-
-    1>&2 kubectl config --kubeconfig=$KUBECONFIG \
-        use-context $2
-
-    cat $KUBECONFIG
+    sudo hab pkg install --binlink jarvus/mkkubeconfig
     ```
 
-1. Apply manifests to create service account:
+2. Apply manifests to create service account:
 
     ```bash
     kubectl apply -f deployers/cluster.yaml
     ```
 
-2. Use provided script to generate a base64-encoded KUBECONFIG for GitHub:
+3. Use `mkkubeconfig` to generate a base64-encoded KUBECONFIG for GitHub:
 
     ```bash
-    ./mkkubeconfig kube-system cluster-deployer | base64
+    mkkubeconfig kube-system cluster-deployer | base64
     ```
 
-3. Save the base64 blob output above to a secret called `KUBECONFIG_BASE64` under the cluster repository
+4. Save the base64 blob output above to a secret called `KUBECONFIG_BASE64` under the cluster repository
 
 ## Create GitHub token for cluster image pulls
 
