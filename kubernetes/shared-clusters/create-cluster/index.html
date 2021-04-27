@@ -12,7 +12,7 @@
         <link rel="canonical" href="http://jarvuslabs.github.io/library/kubernetes/shared-clusters/create-cluster/">
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.2">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.3">
     
     
       
@@ -20,7 +20,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.6f955dcd.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.e35208c4.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.ef6f36e2.min.css">
@@ -384,6 +384,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    Examples
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#set-up-cluster-repository" class="md-nav__link">
     Set up cluster repository
   </a>
@@ -481,6 +488,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    Examples
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#set-up-cluster-repository" class="md-nav__link">
     Set up cluster repository
   </a>
@@ -526,8 +540,7 @@
                 
                 
                 <h1 id="create-a-cluster">Create a cluster<a class="headerlink" href="#create-a-cluster" title="Permanent link"> ¶</a></h1>
-<p><em>Coming soon</em></p>
-<p>For now, see:</p>
+<h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link"> ¶</a></h2>
 <ul>
 <li><a href="https://github.com/JarvusInnovations/cluster-template">cluster-template</a>: Jarvus&rsquo; public template for lightweight, self-sufficient, multi-project Kubernetes clusters.</li>
 <li><a href="https://github.com/JarvusInnovations/jarvus-sandbox-cluster">jarvus-sandbox-cluster</a>: If you have access, this repository demonstrates the setup documented in this section.</li>
@@ -535,77 +548,83 @@
 <h2 id="set-up-cluster-repository">Set up cluster repository<a class="headerlink" href="#set-up-cluster-repository" title="Permanent link"> ¶</a></h2>
 <ol>
 <li>
-<p>Create a new repo (e.g. <code>cluster-live</code>) and configure it with hologit, for example:
-<div class="highlight"><pre><span></span><code>git init cluster-live &amp;&amp; cd cluster-live
-touch README.md &amp;&amp; git add . &amp;&amp; git commit -m &quot;wip: initial commit&quot;
-git holo init &amp;&amp; git commit -m &quot;feat: configure holo workspace&quot;
-</code></pre></div></p>
+<p>Create a new repo (e.g. <code>cluster-live</code>) and configure it with hologit, for example:</p>
+<div class="highlight"><pre><span></span><code>git init cluster-live <span class="o">&amp;&amp;</span> <span class="nb">cd</span> cluster-live
+touch README.md <span class="o">&amp;&amp;</span> git add . <span class="o">&amp;&amp;</span> git commit -m <span class="s2">&quot;wip: initial commit&quot;</span>
+git holo init <span class="o">&amp;&amp;</span> git commit -m <span class="s2">&quot;feat: configure holo workspace&quot;</span>
+</code></pre></div>
 </li>
 <li>
 <p>Add <code>cluster-template</code> as holosource in <code>.holo/sources</code></p>
-</li>
-</ol>
-<p><code>.holo/sources/cluster-template.toml</code>
-<div class="highlight"><pre><span></span><code>[holosource]
-url = &quot;https://github.com/JarvusInnovations/cluster-template&quot;
-ref = &quot;refs/tags/v0.4.0&quot;
+<div class="tabbed-set" data-tabs="1:1"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><label for="__tabbed_1_1">.holo/sources/cluster-template.toml</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="k">[holosource]</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s">&quot;https://github.com/JarvusInnovations/cluster-template&quot;</span>
+<span class="n">ref</span> <span class="o">=</span> <span class="s">&quot;refs/tags/v0.4.0&quot;</span>
 </code></pre></div>
-3. Add holobranch for <code>cluster-template</code> using the <code>k8s-blueprint</code> holomapping in <code>.holo/branches</code></p>
-<p><code>.holo/branches/k8s-manifests/_cluster-template.toml</code>
-<div class="highlight"><pre><span></span><code>[holomapping]
-holosource = &quot;=&gt;k8s-blueprint&quot;
-files = &quot;**&quot;
-before = &quot;*&quot;
-</code></pre></div></p>
-<ol>
-<li>Add your own k8s manifests/settings to the repo e.g. Cluster Issuers for <strong>cert-manager</strong> certificates</li>
-</ol>
-<p><code>cert-manager.issuers.yaml</code></p>
-<div class="highlight"><pre><span></span><code>apiVersion: cert-manager.io/v1alpha2
-kind: ClusterIssuer
-metadata:
-  name: letsencrypt-staging
-spec:
-  acme:
-    email: email@example.com
-    server: https://acme-staging-v02.api.letsencrypt.org/directory
-    privateKeySecretRef:
-      name: letsencrypt-staging
-    solvers:
-    - http01:
-        ingress:
-          class: nginx
----
+</div>
+</div>
+</li>
+<li>
+<p>Add holobranch for <code>cluster-template</code> using the <code>k8s-blueprint</code> holomapping in <code>.holo/branches</code></p>
+<div class="tabbed-set" data-tabs="2:1"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><label for="__tabbed_2_1">.holo/branches/k8s-manifests/_cluster-template.toml</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="k">[holomapping]</span>
+<span class="n">holosource</span> <span class="o">=</span> <span class="s">&quot;=&gt;k8s-blueprint&quot;</span>
+<span class="n">files</span> <span class="o">=</span> <span class="s">&quot;**&quot;</span>
+<span class="n">before</span> <span class="o">=</span> <span class="s">&quot;*&quot;</span>
+</code></pre></div>
+</div>
+</div>
+</li>
+<li>
+<p>Add your own k8s manifests/settings to the repo e.g. Cluster Issuers for <strong>cert-manager</strong> certificates</p>
+<div class="tabbed-set" data-tabs="3:1"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><label for="__tabbed_3_1">cert-manager.issuers.yaml</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">cert-manager.io/v1alpha2</span>
+<span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ClusterIssuer</span>
+<span class="nt">metadata</span><span class="p">:</span>
+  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">letsencrypt-staging</span>
+<span class="nt">spec</span><span class="p">:</span>
+  <span class="nt">acme</span><span class="p">:</span>
+    <span class="nt">email</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">email@example.com</span>
+    <span class="nt">server</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://acme-staging-v02.api.letsencrypt.org/directory</span>
+    <span class="nt">privateKeySecretRef</span><span class="p">:</span>
+      <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">letsencrypt-staging</span>
+    <span class="nt">solvers</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">http01</span><span class="p">:</span>
+        <span class="nt">ingress</span><span class="p">:</span>
+          <span class="nt">class</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">nginx</span>
+<span class="nn">---</span>
 
-apiVersion: cert-manager.io/v1alpha2
-kind: ClusterIssuer
-metadata:
-  name: letsencrypt-prod
-spec:
-  acme:
-    email: email@example.com
-    server: https://acme-v02.api.letsencrypt.org/directory
-    privateKeySecretRef:
-      name: letsencrypt-prod
-    solvers:
-    - http01:
-        ingress:
-          class: nginx
+<span class="nt">apiVersion</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">cert-manager.io/v1alpha2</span>
+<span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ClusterIssuer</span>
+<span class="nt">metadata</span><span class="p">:</span>
+  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">letsencrypt-prod</span>
+<span class="nt">spec</span><span class="p">:</span>
+  <span class="nt">acme</span><span class="p">:</span>
+    <span class="nt">email</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">email@example.com</span>
+    <span class="nt">server</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://acme-v02.api.letsencrypt.org/directory</span>
+    <span class="nt">privateKeySecretRef</span><span class="p">:</span>
+      <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">letsencrypt-prod</span>
+    <span class="nt">solvers</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">http01</span><span class="p">:</span>
+        <span class="nt">ingress</span><span class="p">:</span>
+          <span class="nt">class</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">nginx</span>
 </code></pre></div>
-<ol>
-<li>
-<p>Project manifests into <code>k8s/manifests</code> branch
-<div class="highlight"><pre><span></span><code>git holo project --working k8s-manifests --commit-to=k8s/manifests
-</code></pre></div></p>
+</div>
+</div>
 </li>
 <li>
-<p>Checkout the branch, and diff/apply the changes in the repo to the cluster.
+<p>Project manifests into <code>k8s/manifests</code> branch</p>
+<div class="highlight"><pre><span></span><code>git holo project --working k8s-manifests --commit-to<span class="o">=</span>k8s/manifests
+</code></pre></div>
+</li>
+<li>
+<p>Checkout the branch, and diff/apply the changes in the repo to the cluster.</p>
 <div class="highlight"><pre><span></span><code>git checkout k8s/manifests
 
 kubectl diff -Rf ./
 
 kubectl apply -Rf ./
-</code></pre></div></p>
+</code></pre></div>
 </li>
 </ol>
 <h2 id="create-github-token-for-deploy-workflows">Create GitHub token for deploy workflows<a class="headerlink" href="#create-github-token-for-deploy-workflows" title="Permanent link"> ¶</a></h2>
@@ -618,7 +637,7 @@ kubectl apply -Rf ./
 </ol>
 <h2 id="create-service-account">Create service account<a class="headerlink" href="#create-service-account" title="Permanent link"> ¶</a></h2>
 <p>The GitHub Actions Workflows driving deployments will need a service account with read/write access to all namespaces. Add this manifest to the cluster&rsquo;s GitHub repository under e.g. <code>deployers/cluster.yaml</code> where it will become part of the automated deployment, but you will need to apply it to the cluster manually ahead of the first automated deployment:</p>
-<div class="tabbed-set" data-tabs="1:1"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><label for="__tabbed_1_1">deployers/cluster.yaml</label><div class="tabbed-content">
+<div class="tabbed-set" data-tabs="4:1"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><label for="__tabbed_4_1">deployers/cluster.yaml</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">v1</span>
 <span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ServiceAccount</span>
 <span class="nt">metadata</span><span class="p">:</span>
