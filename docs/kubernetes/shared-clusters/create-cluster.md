@@ -1,8 +1,6 @@
 # Create a cluster
 
-*Coming soon*
-
-For now, see:
+## Examples
 
 - [cluster-template](https://github.com/JarvusInnovations/cluster-template): Jarvus' public template for lightweight, self-sufficient, multi-project Kubernetes clusters.
 - [jarvus-sandbox-cluster](https://github.com/JarvusInnovations/jarvus-sandbox-cluster): If you have access, this repository demonstrates the setup documented in this section.
@@ -10,83 +8,86 @@ For now, see:
 ## Set up cluster repository
 
 1. Create a new repo (e.g. `cluster-live`) and configure it with hologit, for example:
-```
-git init cluster-live && cd cluster-live
-touch README.md && git add . && git commit -m "wip: initial commit"
-git holo init && git commit -m "feat: configure holo workspace"
-```
+
+    ```bash
+    git init cluster-live && cd cluster-live
+    touch README.md && git add . && git commit -m "wip: initial commit"
+    git holo init && git commit -m "feat: configure holo workspace"
+    ```
 
 2. Add `cluster-template` as holosource in `.holo/sources`
 
-`.holo/sources/cluster-template.toml`
-```
-[holosource]
-url = "https://github.com/JarvusInnovations/cluster-template"
-ref = "refs/tags/v0.4.0"
+    === ".holo/sources/cluster-template.toml"
 
-```
+        ```toml
+        [holosource]
+        url = "https://github.com/JarvusInnovations/cluster-template"
+        ref = "refs/tags/v0.4.0"
+        ```
+
 3. Add holobranch for `cluster-template` using the `k8s-blueprint` holomapping in `.holo/branches`
 
-`.holo/branches/k8s-manifests/_cluster-template.toml`
-```
-[holomapping]
-holosource = "=>k8s-blueprint"
-files = "**"
-before = "*"
-```
+    === ".holo/branches/k8s-manifests/_cluster-template.toml"
+
+        ```toml
+        [holomapping]
+        holosource = "=>k8s-blueprint"
+        files = "**"
+        before = "*"
+        ```
 
 4. Add your own k8s manifests/settings to the repo e.g. Cluster Issuers for **cert-manager** certificates
 
-`cert-manager.issuers.yaml`
+    === "cert-manager.issuers.yaml"
 
-```
-apiVersion: cert-manager.io/v1alpha2
-kind: ClusterIssuer
-metadata:
-  name: letsencrypt-staging
-spec:
-  acme:
-    email: email@example.com
-    server: https://acme-staging-v02.api.letsencrypt.org/directory
-    privateKeySecretRef:
-      name: letsencrypt-staging
-    solvers:
-    - http01:
-        ingress:
-          class: nginx
----
+        ```yaml
+        apiVersion: cert-manager.io/v1alpha2
+        kind: ClusterIssuer
+        metadata:
+          name: letsencrypt-staging
+        spec:
+          acme:
+            email: email@example.com
+            server: https://acme-staging-v02.api.letsencrypt.org/directory
+            privateKeySecretRef:
+              name: letsencrypt-staging
+            solvers:
+            - http01:
+                ingress:
+                  class: nginx
+        ---
 
-apiVersion: cert-manager.io/v1alpha2
-kind: ClusterIssuer
-metadata:
-  name: letsencrypt-prod
-spec:
-  acme:
-    email: email@example.com
-    server: https://acme-v02.api.letsencrypt.org/directory
-    privateKeySecretRef:
-      name: letsencrypt-prod
-    solvers:
-    - http01:
-        ingress:
-          class: nginx
-
-```
+        apiVersion: cert-manager.io/v1alpha2
+        kind: ClusterIssuer
+        metadata:
+          name: letsencrypt-prod
+        spec:
+          acme:
+            email: email@example.com
+            server: https://acme-v02.api.letsencrypt.org/directory
+            privateKeySecretRef:
+              name: letsencrypt-prod
+            solvers:
+            - http01:
+                ingress:
+                  class: nginx
+        ```
 
 5. Project manifests into `k8s/manifests` branch
-```
-git holo project --working k8s-manifests --commit-to=k8s/manifests
-```
+
+    ```bash
+    git holo project --working k8s-manifests --commit-to=k8s/manifests
+    ```
 
 6. Checkout the branch, and diff/apply the changes in the repo to the cluster.
-```
-git checkout k8s/manifests
 
-kubectl diff -Rf ./
+    ```bash
+    git checkout k8s/manifests
 
-kubectl apply -Rf ./
+    kubectl diff -Rf ./
 
-```
+    kubectl apply -Rf ./
+    ```
 
 ## Create GitHub token for deploy workflows
 
