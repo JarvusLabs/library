@@ -79,3 +79,52 @@ After applying the manifest to your cluster, replacing `MY_NAMESPACE` and `MY_AD
     ```bash
     mkkubeconfig MY_NAMESPACE MY_ADMIN > ~/.kube/MY_ADMIN.yaml
     ```
+
+## Usage
+
+1. Share the generated KUBECONFIG via a team credential vault or other means
+2. Activate the downloaded `KUBECONFIG` in your current terminal session:
+
+    ```bash
+    export KUBECONFIG=~/.kube/MY_ADMIN.yaml
+    ```
+
+3. Get the name of interesting pods, selecting by appropriate label(s), and store them in shell variables:
+
+    ```bash
+    APP_POD=$(kubectl get pod -l component=app -o jsonpath='{.items[0].metadata.name}')
+    DB_POD=$(kubectl get pod -l component=database -o jsonpath='{.items[0].metadata.name}')
+    ```
+
+### Open interactive app shell
+
+```bash
+kubectl exec -it $APP_POD -- bash
+```
+
+### Open interactive database shell
+
+```bash
+kubectl exec -it $DB_POD -- psql -U admin laravel
+```
+
+### Run an artisan command
+
+```bash
+kubectl exec -it $APP_POD -- php artisan migrate
+```
+
+### Run an SQL query
+
+```bash
+echo 'SELECT * FROM users' | kubectl exec -i $DB_POD -- psql -U admin laravel
+```
+
+### Forward PostgreSQL port
+
+```bash
+kubectl port-forward pods/$DB_POD 5432:5432
+```
+
+!!! tip "Database logins"
+    Default database credentials can usually be found in `helm-chart/values.yaml`
