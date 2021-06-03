@@ -171,7 +171,7 @@ If deployments will utilize Docker container images uploaded to GitHub's Package
     ```bash
     echo -n 'Username: ' && read github_username
     echo -n 'Password: ' && read -s github_token
-    echo && echo "{ \"auths\": { \"docker.pkg.github.com\": { \"auth\": \"$(echo -n "${github_username}:${github_token}" | base64)\" } } }" | base64
+    echo && echo "{ \"auths\": { \"docker.pkg.github.com\": { \"auth\": \"$(echo -n "${github_username}:${github_token}" | base64)\" }, \"ghcr.io\": { \"auth\": \"$(echo -n "${github_username}:${github_token}" | base64)\" } } }" | base64
     ```
 
 5. Save the generated base64 blob to a secret called `DOCKER_CONFIG_BASE64` under the cluster repository
