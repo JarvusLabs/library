@@ -9,14 +9,14 @@
       
       
       
-        <link rel="canonical" href="http://jarvuslabs.github.io/library/kubernetes/shared-clusters/create-cluster/">
+        <link rel="canonical" href="http://jarvuslabs.github.io/library/kubernetes/shared-clusters/deploy-prs/">
       
       <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.2.5">
     
     
       
-        <title>Create a cluster - Jarvus Labs Library</title>
+        <title>Deploy Pull Requests - Jarvus Labs Library</title>
       
     
     
@@ -69,7 +69,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#create-a-cluster" class="md-skip">
+        <a href="#deploy-pull-requests" class="md-skip">
           Skip to content
         </a>
       
@@ -99,7 +99,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Create a cluster
+              Deploy Pull Requests
             
           </span>
         </div>
@@ -355,79 +355,11 @@
             
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Create a cluster
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../create-cluster/" class="md-nav__link">
         Create a cluster
       </a>
-      
-        
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#examples" class="md-nav__link">
-    Examples
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#set-up-cluster-repository" class="md-nav__link">
-    Set up cluster repository
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#create-github-token-for-deploy-workflows" class="md-nav__link">
-    Create GitHub token for deploy workflows
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#create-service-account" class="md-nav__link">
-    Create service account
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#create-github-token-for-cluster-image-pulls" class="md-nav__link">
-    Create GitHub token for cluster image pulls
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -459,11 +391,78 @@
             
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../deploy-prs/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Deploy Pull Requests
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         Deploy Pull Requests
       </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    Prerequisites
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    Setup
+  </a>
+  
+    <nav class="md-nav" aria-label="Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add-a-service-account" class="md-nav__link">
+    Add a service account
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generate-kubeconfig" class="md-nav__link">
+    Generate KUBECONFIG
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -506,37 +505,36 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#examples" class="md-nav__link">
-    Examples
+  <a href="#prerequisites" class="md-nav__link">
+    Prerequisites
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#set-up-cluster-repository" class="md-nav__link">
-    Set up cluster repository
+  <a href="#setup" class="md-nav__link">
+    Setup
+  </a>
+  
+    <nav class="md-nav" aria-label="Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add-a-service-account" class="md-nav__link">
+    Add a service account
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#create-github-token-for-deploy-workflows" class="md-nav__link">
-    Create GitHub token for deploy workflows
+        
+          <li class="md-nav__item">
+  <a href="#generate-kubeconfig" class="md-nav__link">
+    Generate KUBECONFIG
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#create-service-account" class="md-nav__link">
-    Create service account
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#create-github-token-for-cluster-image-pulls" class="md-nav__link">
-    Create GitHub token for cluster image pulls
-  </a>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -552,122 +550,42 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/JarvusLabs/library/edit/master/docs/kubernetes/shared-clusters/create-cluster.md" title="Edit this page" class="md-content__button md-icon">
+                  <a href="https://github.com/JarvusLabs/library/edit/master/docs/kubernetes/shared-clusters/deploy-prs.md" title="Edit this page" class="md-content__button md-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
                   </a>
                 
                 
-                <h1 id="create-a-cluster">Create a cluster<a class="headerlink" href="#create-a-cluster" title="Permanent link"> ¶</a></h1>
-<h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link"> ¶</a></h2>
+                <h1 id="deploy-pull-requests">Deploy Pull Requests<a class="headerlink" href="#deploy-pull-requests" title="Permanent link"> ¶</a></h1>
+<p>Enable a project GitHub repository to automatically deploy each Pull Request into a dedicated namespace hosted on an external shared cluster</p>
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link"> ¶</a></h2>
 <ul>
-<li><a href="https://github.com/JarvusInnovations/cluster-template">cluster-template</a>: Jarvus&rsquo; public template for lightweight, self-sufficient, multi-project Kubernetes clusters.</li>
-<li><a href="https://github.com/JarvusInnovations/jarvus-sandbox-cluster">jarvus-sandbox-cluster</a>: If you have access, this repository demonstrates the setup documented in this section.</li>
+<li>An operational <a href="../create-cluster/">shared cluster</a></li>
+<li>A working <code>Dockerfile</code> at the root of the project repository</li>
 </ul>
-<h2 id="set-up-cluster-repository">Set up cluster repository<a class="headerlink" href="#set-up-cluster-repository" title="Permanent link"> ¶</a></h2>
-<ol>
-<li>
-<p>Create a new repo (e.g. <code>cluster-live</code>) and configure it with hologit, for example:</p>
-<div class="highlight"><pre><span></span><code>git init cluster-live <span class="o">&amp;&amp;</span> <span class="nb">cd</span> cluster-live
-touch README.md <span class="o">&amp;&amp;</span> git add . <span class="o">&amp;&amp;</span> git commit -m <span class="s2">&quot;wip: initial commit&quot;</span>
-git holo init <span class="o">&amp;&amp;</span> git commit -m <span class="s2">&quot;feat: configure holo workspace&quot;</span>
-</code></pre></div>
-</li>
-<li>
-<p>Add <code>cluster-template</code> as holosource in <code>.holo/sources</code></p>
-<div class="tabbed-set" data-tabs="1:1"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><label for="__tabbed_1_1">.holo/sources/cluster-template.toml</label><div class="tabbed-content">
-<div class="highlight"><pre><span></span><code><span class="k">[holosource]</span>
-<span class="n">url</span> <span class="o">=</span> <span class="s">&quot;https://github.com/JarvusInnovations/cluster-template&quot;</span>
-<span class="n">ref</span> <span class="o">=</span> <span class="s">&quot;refs/tags/v0.4.0&quot;</span>
-</code></pre></div>
-</div>
-</div>
-</li>
-<li>
-<p>Add holobranch for <code>cluster-template</code> using the <code>k8s-blueprint</code> holomapping in <code>.holo/branches</code></p>
-<div class="tabbed-set" data-tabs="2:1"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><label for="__tabbed_2_1">.holo/branches/k8s-manifests/_cluster-template.toml</label><div class="tabbed-content">
-<div class="highlight"><pre><span></span><code><span class="k">[holomapping]</span>
-<span class="n">holosource</span> <span class="o">=</span> <span class="s">&quot;=&gt;k8s-blueprint&quot;</span>
-<span class="n">files</span> <span class="o">=</span> <span class="s">&quot;**&quot;</span>
-<span class="n">before</span> <span class="o">=</span> <span class="s">&quot;*&quot;</span>
-</code></pre></div>
-</div>
-</div>
-</li>
-<li>
-<p>Add your own k8s manifests/settings to the repo e.g. Cluster Issuers for <strong>cert-manager</strong> certificates</p>
-<div class="tabbed-set" data-tabs="3:1"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><label for="__tabbed_3_1">cert-manager.issuers.yaml</label><div class="tabbed-content">
-<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">cert-manager.io/v1alpha2</span>
-<span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ClusterIssuer</span>
+<h2 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link"> ¶</a></h2>
+<h3 id="add-a-service-account">Add a service account<a class="headerlink" href="#add-a-service-account" title="Permanent link"> ¶</a></h3>
+<p>The GitHub Actions Workflows driving PR deployments will need a service account with read/write access to the dedicated namespace that all PR environments will be deployed to. Add this manifest to the cluster&rsquo;s GitHub repository under e.g. <code>deployers/myproject.yaml</code> where it will become part of the automated deployment:</p>
+<div class="tabbed-set" data-tabs="1:1"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><label for="__tabbed_1_1">deployers/myproject.yaml</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">v1</span>
+<span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Namespace</span>
 <span class="nt">metadata</span><span class="p">:</span>
-  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">letsencrypt-staging</span>
-<span class="nt">spec</span><span class="p">:</span>
-  <span class="nt">acme</span><span class="p">:</span>
-    <span class="nt">email</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">email@example.com</span>
-    <span class="nt">server</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://acme-staging-v02.api.letsencrypt.org/directory</span>
-    <span class="nt">privateKeySecretRef</span><span class="p">:</span>
-      <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">letsencrypt-staging</span>
-    <span class="nt">solvers</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="nt">http01</span><span class="p">:</span>
-        <span class="nt">ingress</span><span class="p">:</span>
-          <span class="nt">class</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">nginx</span>
+  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">myproject</span>
+
 <span class="nn">---</span>
 
-<span class="nt">apiVersion</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">cert-manager.io/v1alpha2</span>
-<span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ClusterIssuer</span>
-<span class="nt">metadata</span><span class="p">:</span>
-  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">letsencrypt-prod</span>
-<span class="nt">spec</span><span class="p">:</span>
-  <span class="nt">acme</span><span class="p">:</span>
-    <span class="nt">email</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">email@example.com</span>
-    <span class="nt">server</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://acme-v02.api.letsencrypt.org/directory</span>
-    <span class="nt">privateKeySecretRef</span><span class="p">:</span>
-      <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">letsencrypt-prod</span>
-    <span class="nt">solvers</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="nt">http01</span><span class="p">:</span>
-        <span class="nt">ingress</span><span class="p">:</span>
-          <span class="nt">class</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">nginx</span>
-</code></pre></div>
-</div>
-</div>
-</li>
-<li>
-<p>Project manifests into <code>k8s/manifests</code> branch</p>
-<div class="highlight"><pre><span></span><code>git holo project --working k8s-manifests --commit-to<span class="o">=</span>k8s/manifests
-</code></pre></div>
-</li>
-<li>
-<p>Checkout the branch, and diff/apply the changes in the repo to the cluster.</p>
-<div class="highlight"><pre><span></span><code>git checkout k8s/manifests
-
-kubectl diff -Rf ./
-
-kubectl apply -Rf ./
-</code></pre></div>
-</li>
-</ol>
-<h2 id="create-github-token-for-deploy-workflows">Create GitHub token for deploy workflows<a class="headerlink" href="#create-github-token-for-deploy-workflows" title="Permanent link"> ¶</a></h2>
-<p>The GitHub Actions deployment workflow requires a GitHub bot user to write to the cluster repository with. This is necessary so that a branch pushed by the GitHub Actions workflow can trigger subsequent workflows. The authentication tokens that are automatically provided to all GitHub Actions workflow runs are able to push to the host repository, but their pushes are prevented from triggering any workflows.</p>
-<ol>
-<li>Create or reuse GitHub bot user with write access to the cluster repository</li>
-<li>Grant the GitHub bot user the write access to the cluster repository, and ensure that its invitation is accepted</li>
-<li><a href="https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token">Create a Personal Access Token</a> under the GitHub bot user with the <code>repo</code> and <code>workflow</code> scopes</li>
-<li>Save the generated Personal Access Token to a secret called <code>BOT_GITHUB_TOKEN</code> under the cluster repository</li>
-</ol>
-<h2 id="create-service-account">Create service account<a class="headerlink" href="#create-service-account" title="Permanent link"> ¶</a></h2>
-<p>The GitHub Actions Workflows driving deployments will need a service account with read/write access to all namespaces. Add this manifest to the cluster&rsquo;s GitHub repository under e.g. <code>deployers/cluster.yaml</code> where it will become part of the automated deployment, but you will need to apply it to the cluster manually ahead of the first automated deployment:</p>
-<div class="tabbed-set" data-tabs="4:1"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><label for="__tabbed_4_1">deployers/cluster.yaml</label><div class="tabbed-content">
-<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">v1</span>
+<span class="nt">apiVersion</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">v1</span>
 <span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ServiceAccount</span>
 <span class="nt">metadata</span><span class="p">:</span>
-  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">cluster-deployer</span>
-  <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">kube-system</span>
+  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">deployer</span>
+  <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">myproject</span>
 
 <span class="nn">---</span>
 
-<span class="nt">apiVersion</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">rbac.authorization.k8s.io/v1</span>
-<span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ClusterRole</span>
+<span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Role</span>
+<span class="nt">apiVersion</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">rbac.authorization.k8s.io/v1beta1</span>
 <span class="nt">metadata</span><span class="p">:</span>
-  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">cluster-deployer</span>
+  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">deployer</span>
+  <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">myproject</span>
 <span class="nt">rules</span><span class="p">:</span>
 <span class="p p-Indicator">-</span> <span class="nt">apiGroups</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="s">&quot;*&quot;</span><span class="p p-Indicator">]</span>
   <span class="nt">resources</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="s">&quot;*&quot;</span><span class="p p-Indicator">]</span>
@@ -678,19 +596,21 @@ kubectl apply -Rf ./
 <span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">RoleBinding</span>
 <span class="nt">apiVersion</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">rbac.authorization.k8s.io/v1beta1</span>
 <span class="nt">metadata</span><span class="p">:</span>
-  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">cluster-deployer</span>
-  <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">kube-system</span>
-<span class="nt">roleRef</span><span class="p">:</span>
-  <span class="nt">apiGroup</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">rbac.authorization.k8s.io</span>
-  <span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ClusterRole</span>
-  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">cluster-deployer</span>
+  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">deployer</span>
+  <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">myproject</span>
 <span class="nt">subjects</span><span class="p">:</span>
 <span class="p p-Indicator">-</span> <span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ServiceAccount</span>
-  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">cluster-deployer</span>
-  <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">kube-system</span>
+  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">deployer</span>
+  <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">myproject</span>
+<span class="nt">roleRef</span><span class="p">:</span>
+  <span class="nt">apiGroup</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">rbac.authorization.k8s.io</span>
+  <span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Role</span>
+  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">deployer</span>
 </code></pre></div>
 </div>
 </div>
+<h3 id="generate-kubeconfig">Generate KUBECONFIG<a class="headerlink" href="#generate-kubeconfig" title="Permanent link"> ¶</a></h3>
+<p>After the service account manifest has been merged and deployed, you can generate a KUBECONFIG that client code can use to connect to the cluster under it:</p>
 <ol>
 <li>
 <p>Install <a href="https://github.com/JarvusInnovations/mkkubeconfig"><code>mkkubeconfig</code></a> command (if needed):</p>
@@ -698,35 +618,14 @@ kubectl apply -Rf ./
 </code></pre></div>
 </li>
 <li>
-<p>Apply manifests to create service account:</p>
-<div class="highlight"><pre><span></span><code>kubectl apply -f deployers/cluster.yaml
-</code></pre></div>
-</li>
-<li>
 <p>Use <code>mkkubeconfig</code> to generate a base64-encoded KUBECONFIG for GitHub:</p>
-<div class="highlight"><pre><span></span><code>mkkubeconfig kube-system cluster-deployer <span class="p">|</span> base64
+<div class="highlight"><pre><span></span><code>mkkubeconfig myproject deployer <span class="p">|</span> base64
 </code></pre></div>
 </li>
 <li>
-<p>Save the base64 blob output above to a secret called <code>KUBECONFIG_BASE64</code> under the cluster repository</p>
+<p>Copy the base64-encoded blob following the status log lines and paste it into a secret in the project GitHub repository named <code>KUBECONFIG_BASE64</code></p>
 </li>
-</ol>
-<h2 id="create-github-token-for-cluster-image-pulls">Create GitHub token for cluster image pulls<a class="headerlink" href="#create-github-token-for-cluster-image-pulls" title="Permanent link"> ¶</a></h2>
-<p>If deployments will utilize Docker container images uploaded to GitHub&rsquo;s Packages registry, the deployment workflow can handle injecting these into any desired namespace.</p>
-<ol>
-<li>Create or reuse GitHub bot user with write access to the cluster repository</li>
-<li>Grant the GitHub bot user write access to the cluster repository, and ensure that its invitation is accepted</li>
-<li><a href="https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token">Create a Personal Access Token</a> under the GitHub bot user with the <code>read:packages</code> scope</li>
-<li>
-<p>Generate a base64-encoded <code>.docker/config.json</code> file:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">echo</span> -n <span class="s1">&#39;Username: &#39;</span> <span class="o">&amp;&amp;</span> <span class="nb">read</span> github_username
-<span class="nb">echo</span> -n <span class="s1">&#39;Password: &#39;</span> <span class="o">&amp;&amp;</span> <span class="nb">read</span> -s github_token
-<span class="nb">echo</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&quot;{ \&quot;auths\&quot;: { \&quot;docker.pkg.github.com\&quot;: { \&quot;auth\&quot;: \&quot;</span><span class="k">$(</span><span class="nb">echo</span> -n <span class="s2">&quot;</span><span class="si">${</span><span class="nv">github_username</span><span class="si">}</span><span class="s2">:</span><span class="si">${</span><span class="nv">github_token</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">|</span> base64<span class="k">)</span><span class="s2">\&quot; }, \&quot;ghcr.io\&quot;: { \&quot;auth\&quot;: \&quot;</span><span class="k">$(</span><span class="nb">echo</span> -n <span class="s2">&quot;</span><span class="si">${</span><span class="nv">github_username</span><span class="si">}</span><span class="s2">:</span><span class="si">${</span><span class="nv">github_token</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">|</span> base64<span class="k">)</span><span class="s2">\&quot; } } }&quot;</span> <span class="p">|</span> base64
-</code></pre></div>
-</li>
-<li>
-<p>Save the generated base64 blob to a secret called <code>DOCKER_CONFIG_BASE64</code> under the cluster repository</p>
-</li>
+<li>Install <code>k8s-deploy.yml</code> and <code>k8s-destroy.yml</code> into <code>.github/workflows/</code> within the project GitHub repository and tailor the environment variables at the top</li>
 </ol>
                 
               
@@ -747,7 +646,7 @@ kubectl apply -Rf ./
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
         
-        <a href="../../recipes/restic-snapshots/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Restic Snapshots" rel="prev">
+        <a href="../admin-access/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Grant admin access" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -756,26 +655,11 @@ kubectl apply -Rf ./
               <span class="md-footer__direction">
                 Previous
               </span>
-              Restic Snapshots
+              Grant admin access
             </div>
           </div>
         </a>
       
-      
-        
-        <a href="../deploy-project/" class="md-footer__link md-footer__link--next" aria-label="Next: Deploy a project" rel="next">
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              Deploy a project
-            </div>
-          </div>
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
-          </div>
-        </a>
       
     </nav>
   
