@@ -1,4 +1,4 @@
-# Deploy Pull Requests
+# Deploy project PRs
 
 Enable a project GitHub repository to automatically deploy each Pull Request into a dedicated namespace hosted on an external shared cluster
 
