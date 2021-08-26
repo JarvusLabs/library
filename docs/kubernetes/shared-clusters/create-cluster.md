@@ -108,35 +108,35 @@ The GitHub Actions Workflows driving deployments will need a service account wit
     apiVersion: v1
     kind: ServiceAccount
     metadata:
-    name: cluster-deployer
-    namespace: kube-system
+      name: cluster-deployer
+      namespace: kube-system
 
     ---
 
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRole
     metadata:
-    name: cluster-deployer
+      name: cluster-deployer
     rules:
     - apiGroups: ["*"]
-    resources: ["*"]
-    verbs: ["*"]
+      resources: ["*"]
+      verbs: ["*"]
 
     ---
 
     kind: RoleBinding
     apiVersion: rbac.authorization.k8s.io/v1beta1
     metadata:
-    name: cluster-deployer
-    namespace: kube-system
+      name: cluster-deployer
+      namespace: kube-system
     roleRef:
-    apiGroup: rbac.authorization.k8s.io
-    kind: ClusterRole
-    name: cluster-deployer
+      apiGroup: rbac.authorization.k8s.io
+      kind: ClusterRole
+      name: cluster-deployer
     subjects:
     - kind: ServiceAccount
-    name: cluster-deployer
-    namespace: kube-system
+      name: cluster-deployer
+      namespace: kube-system
     ```
 
 1. Install [`mkkubeconfig`](https://github.com/JarvusInnovations/mkkubeconfig) command (if needed):
