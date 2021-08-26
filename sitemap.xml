@@ -21,12 +21,12 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>http://jarvuslabs.github.io/library/kubernetes/shared-clusters/deploy-project/</loc>
+         <loc>http://jarvuslabs.github.io/library/kubernetes/shared-clusters/deploy-project-prs/</loc>
          <lastmod>2021-08-26</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>http://jarvuslabs.github.io/library/kubernetes/shared-clusters/deploy-prs/</loc>
+         <loc>http://jarvuslabs.github.io/library/kubernetes/shared-clusters/deploy-project/</loc>
          <lastmod>2021-08-26</lastmod>
          <changefreq>daily</changefreq>
     </url>
