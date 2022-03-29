@@ -125,7 +125,7 @@ The GitHub Actions Workflows driving deployments will need a service account wit
     ---
 
     kind: RoleBinding
-    apiVersion: rbac.authorization.k8s.io/v1beta1
+    apiVersion: rbac.authorization.k8s.io/v1
     metadata:
       name: cluster-deployer
       namespace: kube-system

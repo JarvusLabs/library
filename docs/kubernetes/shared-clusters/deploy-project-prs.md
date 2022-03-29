@@ -32,7 +32,7 @@ The GitHub Actions Workflows driving PR deployments will need a service account 
     ---
 
     kind: Role
-    apiVersion: rbac.authorization.k8s.io/v1beta1
+    apiVersion: rbac.authorization.k8s.io/v1
     metadata:
       name: deployer
       namespace: myproject
@@ -44,7 +44,7 @@ The GitHub Actions Workflows driving PR deployments will need a service account 
     ---
 
     kind: RoleBinding
-    apiVersion: rbac.authorization.k8s.io/v1beta1
+    apiVersion: rbac.authorization.k8s.io/v1
     metadata:
       name: deployer
       namespace: myproject
