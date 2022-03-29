@@ -102,37 +102,25 @@ The GitHub Actions deployment workflow requires a GitHub bot user to write to th
 
 The GitHub Actions Workflows driving deployments will need a service account with read/write access to all namespaces. Add this manifest to the cluster's GitHub repository under e.g. `deployers/cluster.yaml` where it will become part of the automated deployment, but you will need to apply it to the cluster manually ahead of the first automated deployment:
 
-=== "deployers/cluster.yaml"
+=== "github-actions.serviceaccount.yaml"
 
     ```yaml
     apiVersion: v1
     kind: ServiceAccount
     metadata:
-      name: cluster-deployer
+      name: github-actions
       namespace: kube-system
 
     ---
 
     apiVersion: rbac.authorization.k8s.io/v1
-    kind: ClusterRole
+    kind: ClusterRoleBinding
     metadata:
-      name: cluster-deployer
-    rules:
-    - apiGroups: ["*"]
-      resources: ["*"]
-      verbs: ["*"]
-
-    ---
-
-    kind: RoleBinding
-    apiVersion: rbac.authorization.k8s.io/v1
-    metadata:
-      name: cluster-deployer
-      namespace: kube-system
+      name: root-cluster-admin-binding
     roleRef:
       apiGroup: rbac.authorization.k8s.io
       kind: ClusterRole
-      name: cluster-deployer
+      name: cluster-admin
     subjects:
     - kind: ServiceAccount
       name: cluster-deployer
@@ -148,13 +136,13 @@ The GitHub Actions Workflows driving deployments will need a service account wit
 2. Apply manifests to create service account:
 
     ```bash
-    kubectl apply -f deployers/cluster.yaml
+    kubectl apply -f github-actions.serviceaccount.yaml
     ```
 
 3. Use `mkkubeconfig` to generate a base64-encoded KUBECONFIG for GitHub:
 
     ```bash
-    mkkubeconfig kube-system cluster-deployer | base64
+    mkkubeconfig kube-system github-actions | base64
     ```
 
 4. Save the base64 blob output above to a secret called `KUBECONFIG_BASE64` under the cluster repository
