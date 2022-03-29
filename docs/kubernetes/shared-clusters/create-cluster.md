@@ -114,16 +114,32 @@ The GitHub Actions Workflows driving deployments will need a service account wit
     ---
 
     apiVersion: rbac.authorization.k8s.io/v1
+    kind: ClusterRole
+    metadata:
+      name: github-actions
+    rules:
+    - apiGroups: ["*"]
+      resources: ["*"]
+      verbs: ["*"]
+    - apiGroups: ["apiextensions.k8s.io"]
+      resources: ["customresourcedefinitions"]
+      verbs: ["*"]
+    - nonResourceURLs: ["*"]
+      verbs: ["*"]
+
+    ---
+
+    apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
       name: github-actions-cluster-admin-binding
     roleRef:
       apiGroup: rbac.authorization.k8s.io
       kind: ClusterRole
-      name: cluster-admin
+      name: github-actions
     subjects:
     - kind: ServiceAccount
-      name: cluster-deployer
+      name: github-actions
       namespace: kube-system
     ```
 
