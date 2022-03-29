@@ -755,13 +755,14 @@ kubectl apply -Rf ./
 <p>Generate a base64-encoded <code>.docker/config.json</code> file:</p>
 <div class="highlight"><pre><span></span><code><span class="nb">echo</span> -n <span class="s1">&#39;Username: &#39;</span> <span class="o">&amp;&amp;</span> <span class="nb">read</span> github_username
 <span class="nb">echo</span> -n <span class="s1">&#39;Password: &#39;</span> <span class="o">&amp;&amp;</span> <span class="nb">read</span> -s github_token
-<span class="nb">echo</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&quot;{ \&quot;auths\&quot;: { \&quot;docker.pkg.github.com\&quot;: { \&quot;auth\&quot;: \&quot;</span><span class="k">$(</span><span class="nb">echo</span> -n <span class="s2">&quot;</span><span class="si">${</span><span class="nv">github_username</span><span class="si">}</span><span class="s2">:</span><span class="si">${</span><span class="nv">github_token</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">|</span> base64<span class="k">)</span><span class="s2">\&quot; }, \&quot;ghcr.io\&quot;: { \&quot;auth\&quot;: \&quot;</span><span class="k">$(</span><span class="nb">echo</span> -n <span class="s2">&quot;</span><span class="si">${</span><span class="nv">github_username</span><span class="si">}</span><span class="s2">:</span><span class="si">${</span><span class="nv">github_token</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">|</span> base64<span class="k">)</span><span class="s2">\&quot; } } }&quot;</span> <span class="p">|</span> base64
+<span class="nb">echo</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&quot;{ \&quot;auths\&quot;: { \&quot;ghcr.io\&quot;: { \&quot;auth\&quot;: \&quot;</span><span class="k">$(</span><span class="nb">echo</span> -n <span class="s2">&quot;</span><span class="si">${</span><span class="nv">github_username</span><span class="si">}</span><span class="s2">:</span><span class="si">${</span><span class="nv">github_token</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">|</span> base64<span class="k">)</span><span class="s2">\&quot; }, \&quot;ghcr.io\&quot;: { \&quot;auth\&quot;: \&quot;</span><span class="k">$(</span><span class="nb">echo</span> -n <span class="s2">&quot;</span><span class="si">${</span><span class="nv">github_username</span><span class="si">}</span><span class="s2">:</span><span class="si">${</span><span class="nv">github_token</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">|</span> base64<span class="k">)</span><span class="s2">\&quot; } } }&quot;</span> <span class="p">|</span> base64
 </code></pre></div>
 </li>
 <li>
 <p>Save the generated base64 blob to a secret called <code>DOCKER_CONFIG_BASE64</code> under the cluster repository</p>
 </li>
 </ol>
+<p>If no private image pulls will be needed, create <code>DOCKER_CONFIG_BASE64</code> with the value <code>e30K</code> (an empty JSON document)</p>
 
               
             </article>
