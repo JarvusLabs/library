@@ -41,7 +41,7 @@
     === "cert-manager.issuers.yaml"
 
         ```yaml
-        apiVersion: cert-manager.io/v1alpha2
+        apiVersion: cert-manager.io/v1
         kind: ClusterIssuer
         metadata:
           name: letsencrypt-staging
@@ -57,7 +57,7 @@
                   class: nginx
         ---
 
-        apiVersion: cert-manager.io/v1alpha2
+        apiVersion: cert-manager.io/v1
         kind: ClusterIssuer
         metadata:
           name: letsencrypt-prod
